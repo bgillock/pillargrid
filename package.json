@@ -1,0 +1,16 @@
+{
+  "name": "pillar-grid-server",
+  "version": "1.0.0",
+  "description": "Access graphic representation of a pillar grid",
+  "main": "index.js",
+  "keywords": [
+    "swagger"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "connect": "^3.2.0",
+    "js-yaml": "^3.3.0",
+    "swagger-tools": "0.9.*"
+  }
+}

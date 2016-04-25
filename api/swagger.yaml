@@ -1,0 +1,114 @@
+---
+swagger: "2.0"
+info:
+  description: "Access graphic representation of a pillar grid"
+  version: "1.0.0"
+  title: "Pillar Grid Server"
+host: "localhost:3001"
+basePath: "/pillar/v1"
+schemes:
+- "http"
+produces:
+- "application/json"
+paths:
+  /brick/{propertyId}:
+    post:
+      tags:
+      - "brick"
+      summary: "Upload a brick"
+      description: "Upload a brick and store it for retrieval later"
+      operationId: "brickPropertyIdPOST"
+      parameters:
+      - name: "propertyId"
+        in: "path"
+        description: "Property ID of brick"
+        required: true
+        type: "string"
+      - name: "data"
+        in: "formData"
+        description: "An array of number [R,G,B,x0,y0,z0,...x7,y7,z7], top then base,\
+          \ nw,ne,se,sw"
+        required: true
+        type: "array"
+        items:
+          type: "number"
+          format: "float"
+        collectionFormat: "csv"
+      responses:
+        200:
+          description: "OK"
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Brick"
+  /bricks/{propertyId}:
+    get:
+      tags:
+      - "bricks"
+      summary: "Get a list of urls to bricks"
+      description: "Returns a list of urls to bricks that contain pillar grid graphics\n"
+      operationId: "bricksGET"
+      parameters:
+      - name: "propertyId"
+        in: "path"
+        description: "The id of the property"
+        required: true
+        type: "string"
+      - name: "geohashes"
+        in: "header"
+        description: "List of geohash keys"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "csv"
+      responses:
+        200:
+          description: "An array of links to bricks"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/BrickURL"
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Bricks"
+  /properties:
+    get:
+      tags:
+      - "properties"
+      summary: "Get a list of properties"
+      description: "Returns a list of property IDs which can be used for getting bricks"
+      operationId: "propertiesGET"
+      parameters: []
+      responses:
+        200:
+          description: "An array of links to bricks"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Properties"
+definitions:
+  BrickURL:
+    type: "object"
+    properties:
+      url:
+        type: "string"
+        description: "URL of brick"
+  Error:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      message:
+        type: "string"
+      fields:
+        type: "string"
