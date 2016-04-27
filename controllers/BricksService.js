@@ -24,6 +24,7 @@ exports.bricksGET = function(args, res, next) {
             console.log("args.geohashes.length" + args.geohashes.value.length)
             if (args.geohashes.value.length > 0)
             {
+                // Comment
                 var newArray = [];
                 for(var i = 0; i < filenames.length; i++) {
                     for(var j = 0; j < args.geohashes.value.length; j++) {
